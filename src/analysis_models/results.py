@@ -68,11 +68,17 @@ class CrossModalPattern(BaseModel):
     description: Optional[str] = None
     evidence: Optional[Dict[str, Any]] = None
 
+class CircadianAnalysisResult(BaseModel):
+    summary: Dict[str, Any]
+    patterns: PatternDetection
+    metadata: Dict[str, Any]
+
 class CrossModalAnalysisResult(BaseModel):
     version: str = "1.0"
     physiological: PhysiologicalAnalysisResult
     meal: MealAnalysisResult
     lung_function: LungFunctionAnalysisResult
+    circadian: Optional[CircadianAnalysisResult] = None
     aligned_records: List[Dict[str, Any]]  # temporally aligned/aggregated data
     detected_patterns: List[CrossModalPattern]
     metadata: Dict[str, Any]

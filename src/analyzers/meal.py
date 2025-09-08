@@ -14,7 +14,7 @@ class MealAnalyzer(BaseAnalyzer):
         # Group meals by date
         meals_by_date = defaultdict(list)
         for d in self.data:
-            ts = d.get("timestamp")
+            ts = d.get("time")
             date_str = "Unknown"
             ts_str = None
             if ts:

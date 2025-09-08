@@ -51,6 +51,14 @@ class ReportGenerator:
             "assessment_statuses": [a.status for a in getattr(lung, "assessments", [])],
         }
 
+        # Circadian summary
+        if result.circadian:
+            circ = result.circadian
+            summary["circadian"] = {
+                "summary": circ.summary,
+                "patterns": circ.patterns.patterns,
+            }
+
         # Cross-modal patterns
         summary["cross_modal_patterns"] = [
             {"name": p.name, "description": p.description} for p in result.detected_patterns

@@ -5,6 +5,7 @@ class PipelineState(Enum):
     NOT_STARTED = auto()
     INGESTION = auto()
     CLEANING = auto()
+    FEATURE_EXTRACTION = auto()
     ANALYSIS = auto()
     CROSS_MODAL_ANALYSIS = auto()
     REPORT_GENERATION = auto()
@@ -13,12 +14,13 @@ class PipelineState(Enum):
 
 
 class PipelineOrchestrator:
-    def __init__(self, ingestion_fn, cleaning_fn, analysis_fns, cross_modal_fn, report_fn):
+    def __init__(self, ingestion_fn, cleaning_fn, feature_extraction_fns, analysis_fns, cross_modal_fn, report_fn):
         self.state = PipelineState.NOT_STARTED
         self.error = None
         self.ingestion_fn = ingestion_fn
         self.cleaning_fn = cleaning_fn
-        self.analysis_fns = analysis_fns  # List of callables for individual analyses
+        self.feature_extraction_fns = feature_extraction_fns
+        self.analysis_fns = analysis_fns
         self.cross_modal_fn = cross_modal_fn
         self.report_fn = report_fn
         self.results = {}
@@ -32,6 +34,13 @@ class PipelineOrchestrator:
             self._transition(PipelineState.CLEANING)
             cleaned = self.cleaning_fn(data)
             self.results['cleaned'] = cleaned
+
+            self._transition(PipelineState.FEATURE_EXTRACTION)
+            extracted_features = {}
+            for name, fn in self.feature_extraction_fns.items():
+                extracted_features[name] = fn(cleaned)
+            cleaned['features'] = extracted_features
+            self.results['features'] = extracted_features
 
             self._transition(PipelineState.ANALYSIS)
             analysis_results = {}

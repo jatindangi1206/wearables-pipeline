@@ -19,8 +19,13 @@ class LungFunctionAnalyzer(BaseAnalyzer):
             fvc = d.get("fvc")
             fev1_fvc = d.get("fev1_fvc")
             timestamp = d.get("timestamp")
+
+            ts_str = None
+            if timestamp:
+                ts_str = timestamp.isoformat()
+
             entries.append(LungFunctionEntry(
-                timestamp=timestamp,
+                timestamp=ts_str,
                 fev1=fev1,
                 fvc=fvc,
                 fev1_fvc=fev1_fvc

@@ -1,0 +1,69 @@
+data_sources:
+  blood_pressure:
+    type: csv
+    file_path: input/physio_data/bp_1748520306.csv
+    model: BloodPressure
+    schema_mapping:
+      systolic: systolic
+      diastolic: diastolic
+      heartRate: heart_rate
+      createdTime: created_time
+  heart_rate:
+    type: heart_rate
+    file_path: input/physio_data/heartrate_1748540727.json
+    model: HeartRate
+    schema_mapping:
+      createdTime: created_time
+      heartRate: heart_rate
+  sleep:
+    type: csv
+    file_path: input/physio_data/sleep_1734682486.csv
+    model: Sleep
+    schema_mapping:
+      lightSleep: light_sleep
+      deepSleep: deep_sleep
+      remSleep: rem_sleep
+      almostAwake: almost_awake
+      logDateTime: log_date_time
+      logEndTime: log_end_time
+  spo2:
+    type: json
+    file_path: input/physio_data/spo2_1734682499.json
+    model: SpO2
+    schema_mapping:
+      spo2Value: spo2_value
+      createdTime: created_time
+  steps:
+    type: csv
+    file_path: input/physio_data/steps_1748540724.csv
+    model: Steps
+    schema_mapping:
+      steps: steps
+      distance: distance
+      calories: calories
+      logDateTime: log_date_time
+      logEndTime: log_end_time
+  temperature:
+    type: json
+    file_path: input/physio_data/temperature_1734444970.json
+    model: Temperature
+    schema_mapping:
+      temperature: temperature
+      createdTime: created_time
+  meal:
+    type: csv
+    file_path: input/meals_data/Combined Meals Data.csv
+    model: Meal
+    schema_mapping:
+      dish: dish
+      time: time
+      rating: rating
+      customization: customization
+  lung_function:
+    type: csv
+    file_path: input/lungs_data/spirometry.csv
+    model: LungFunction
+    schema_mapping:
+      FEV1: fev1
+      "FEV1/FVC": fev1_fvc
+      "Patient ID": patient_id

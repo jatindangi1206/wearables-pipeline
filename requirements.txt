@@ -1,0 +1,6 @@
+pandas
+pydantic
+pyyaml
+numpy
+scipy
+scikit-learn

@@ -28,7 +28,7 @@ class PhysiologicalAnalysisResult(BaseModel):
     metadata: Dict[str, Any]
 
 class MealEntry(BaseModel):
-    timestamp: str
+    timestamp: Optional[str] = None
     dish: str
     rating: Optional[float] = None
     customizations: Optional[List[str]] = None
@@ -45,7 +45,7 @@ class MealAnalysisResult(BaseModel):
     metadata: Dict[str, Any]
 
 class LungFunctionEntry(BaseModel):
-    timestamp: str
+    timestamp: Optional[str] = None
     fev1: float
     fvc: float
     fev1_fvc: float

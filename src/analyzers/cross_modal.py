@@ -50,10 +50,11 @@ class CrossModalAnalyzer:
 
         # Lung function: group by date
         for entry in self.lung_function.entries:
-            date = entry.timestamp[:10]
-            if "lung_function" not in date_map[date]:
-                date_map[date]["lung_function"] = []
-            date_map[date]["lung_function"].append(entry.dict())
+            if entry.timestamp:
+                date = entry.timestamp[:10]
+                if "lung_function" not in date_map[date]:
+                    date_map[date]["lung_function"] = []
+                date_map[date]["lung_function"].append(entry.dict())
 
         # Flatten to list of dicts
         aligned = []

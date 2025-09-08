@@ -23,7 +23,7 @@ def main(config_path):
         for d in data['lung_function']:
             dct = d.model_dump() if hasattr(d, "model_dump") else (d.dict() if hasattr(d, "dict") else vars(d))
             # Filter out records missing required fields
-            if all(dct.get(k) is not None for k in ("fev1", "fvc", "fev1_fvc", "timestamp")):
+            if all(dct.get(k) is not None for k in ("fev1", "fvc", "fev1_fvc")):
                 lung_dicts.append(dct)
         return LungFunctionAnalyzer(lung_dicts).analyze()
     def meal_fn(data):

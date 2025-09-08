@@ -7,13 +7,13 @@ data_sources:
       systolic: systolic
       diastolic: diastolic
       heartRate: heart_rate
-      createdTime: created_time
+      createdTime: timestamp
   heart_rate:
     type: heart_rate
     file_path: input/physio_data/heartrate_1748540727.json
     model: HeartRate
     schema_mapping:
-      createdTime: created_time
+      createdTime: timestamp
       heartRate: heart_rate
   sleep:
     type: csv
@@ -24,15 +24,15 @@ data_sources:
       deepSleep: deep_sleep
       remSleep: rem_sleep
       almostAwake: almost_awake
-      logDateTime: log_date_time
-      logEndTime: log_end_time
+      logDateTime: timestamp
+      logEndTime: timestamp_end
   spo2:
     type: json
     file_path: input/physio_data/spo2_1734682499.json
     model: SpO2
     schema_mapping:
       spo2Value: spo2_value
-      createdTime: created_time
+      createdTime: timestamp
   steps:
     type: csv
     file_path: input/physio_data/steps_1748540724.csv
@@ -41,22 +41,22 @@ data_sources:
       steps: steps
       distance: distance
       calories: calories
-      logDateTime: log_date_time
-      logEndTime: log_end_time
+      logDateTime: timestamp
+      logEndTime: timestamp_end
   temperature:
     type: json
     file_path: input/physio_data/temperature_1734444970.json
     model: Temperature
     schema_mapping:
       temperature: temperature
-      createdTime: created_time
+      createdTime: timestamp
   meal:
     type: csv
     file_path: input/meals_data/Combined Meals Data.csv
     model: Meal
     schema_mapping:
       dish: dish
-      time: time
+      time: timestamp
       rating: rating
       customization: customization
   lung_function:

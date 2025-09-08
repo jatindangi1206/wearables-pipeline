@@ -22,13 +22,13 @@ class PhysiologicalAnalyzer(BaseAnalyzer):
         metrics = {
             "systolic": [d.get("systolic") for d in self.data if d.get("systolic") is not None],
             "diastolic": [d.get("diastolic") for d in self.data if d.get("diastolic") is not None],
-            "heartrate": [d.get("heartrate") for d in self.data if d.get("heartrate") is not None],
-            "spo2": [d.get("spo2") for d in self.data if d.get("spo2") is not None],
+            "heart_rate": [d.get("heart_rate") for d in self.data if d.get("heart_rate") is not None],
+            "spo2_value": [d.get("spo2_value") for d in self.data if d.get("spo2_value") is not None],
             "steps": [d.get("steps") for d in self.data if d.get("steps") is not None],
             "temperature": [d.get("temperature") for d in self.data if d.get("temperature") is not None],
-            "sleep_stage_deep": [d.get("sleep_stage_deep") for d in self.data if d.get("sleep_stage_deep") is not None],
-            "sleep_stage_rem": [d.get("sleep_stage_rem") for d in self.data if d.get("sleep_stage_rem") is not None],
-            "sleep_stage_light": [d.get("sleep_stage_light") for d in self.data if d.get("sleep_stage_light") is not None],
+            "deep_sleep": [d.get("deep_sleep") for d in self.data if d.get("deep_sleep") is not None],
+            "rem_sleep": [d.get("rem_sleep") for d in self.data if d.get("rem_sleep") is not None],
+            "light_sleep": [d.get("light_sleep") for d in self.data if d.get("light_sleep") is not None],
         }
 
         # Baseline statistics
@@ -42,12 +42,12 @@ class PhysiologicalAnalyzer(BaseAnalyzer):
             )
 
         # Correlation matrix for selected metrics
-        corr_metrics = {k: v for k, v in metrics.items() if k in ["systolic", "diastolic", "heartrate", "spo2", "steps", "temperature"]}
+        corr_metrics = {k: v for k, v in metrics.items() if k in ["systolic", "diastolic", "heart_rate", "spo2_value", "steps", "temperature"]}
         correlations = CorrelationMatrix(matrix=stat_utils.correlation_matrix(corr_metrics))
 
         # Clinical threshold analysis
         # Heart Rate
-        hr_vals = metrics["heartrate"]
+        hr_vals = metrics["heart_rate"]
         if hr_vals:
             if any(hr > 100 for hr in hr_vals):
                 hr_flag = ClinicalAssessment(status="tachycardia", details="Resting HR > 100 bpm", recommendations=["Consult physician"])
@@ -57,10 +57,10 @@ class PhysiologicalAnalyzer(BaseAnalyzer):
                 hr_flag = ClinicalAssessment(status="normal")
         else:
             hr_flag = ClinicalAssessment(status="unknown")
-        clinical_flags["heartrate"] = hr_flag
+        clinical_flags["heart_rate"] = hr_flag
 
         # SpO2
-        spo2_vals = metrics["spo2"]
+        spo2_vals = metrics["spo2_value"]
         if spo2_vals:
             if any(s < 90 for s in spo2_vals):
                 spo2_flag = ClinicalAssessment(status="severe_hypoxemia", details="SpO2 < 90%", recommendations=["Immediate attention"])
@@ -70,7 +70,7 @@ class PhysiologicalAnalyzer(BaseAnalyzer):
                 spo2_flag = ClinicalAssessment(status="normal")
         else:
             spo2_flag = ClinicalAssessment(status="unknown")
-        clinical_flags["spo2"] = spo2_flag
+        clinical_flags["spo2_value"] = spo2_flag
 
         # Temperature
         temp_vals = metrics["temperature"]

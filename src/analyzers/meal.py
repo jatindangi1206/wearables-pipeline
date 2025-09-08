@@ -14,14 +14,20 @@ class MealAnalyzer(BaseAnalyzer):
         # Group meals by date
         meals_by_date = defaultdict(list)
         for d in self.data:
-            date = d.get("timestamp", "")[:10]  # Assume ISO format, take YYYY-MM-DD
+            ts = d.get("timestamp")
+            date_str = "Unknown"
+            ts_str = None
+            if ts:
+                date_str = ts.isoformat()[:10]
+                ts_str = ts.isoformat()
+
             entry = MealEntry(
-                timestamp=d.get("timestamp"),
+                timestamp=ts_str,
                 dish=d.get("dish"),
                 rating=d.get("rating"),
                 customizations=d.get("customizations", [])
             )
-            meals_by_date[date].append(entry)
+            meals_by_date[date_str].append(entry)
 
         daily_summaries = []
         all_ratings = []

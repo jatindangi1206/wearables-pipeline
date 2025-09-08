@@ -19,9 +19,14 @@ def mode(data: List[float]) -> Optional[float]:
     if not data:
         return None
     mode_res = stats.mode(data, nan_policy='omit')
-    if mode_res.count[0] == 0:
-        return None
-    return float(mode_res.mode[0])
+    # In newer scipy versions, mode can be a scalar if there's one mode.
+    # In older versions, it's always an array.
+    mode_val = mode_res.mode
+    if isinstance(mode_val, np.ndarray):
+        if mode_res.count == 0:
+            return None
+        return float(mode_val[0])
+    return float(mode_val)
 
 
 def stddev(data: List[float]) -> Optional[float]:

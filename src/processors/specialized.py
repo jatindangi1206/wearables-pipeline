@@ -13,8 +13,7 @@ class HeartRateProcessor(BaseProcessor):
         df = self._rename_columns(df)
         df = convert_timestamp_cols(df)
         
-        # Ensure only columns from the schema mapping are present
-        mapped_cols = [col for col in self.schema_mapping.values() if col in df.columns]
-        df = df[mapped_cols]
+        # Drop columns that are not in the schema mapping
+        df = df[self.schema_mapping.values()]
         
         return self._validate_data(df)

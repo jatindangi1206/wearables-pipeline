@@ -59,6 +59,54 @@ class ReportGenerator:
                 "patterns": circ.patterns.patterns,
             }
 
+        # Variability summary
+        if result.variability:
+            var = result.variability
+            summary["variability"] = {
+                "summary": var.summary,
+                "patterns": var.patterns.patterns,
+            }
+
+        # Complexity summary
+        if result.complexity:
+            comp = result.complexity
+            summary["complexity"] = {
+                "summary": comp.summary,
+                "patterns": comp.patterns.patterns,
+            }
+
+        # Sleep summary
+        if result.sleep:
+            slp = result.sleep
+            summary["sleep"] = {
+                "summary": slp.summary,
+                "patterns": slp.patterns.patterns,
+            }
+
+        # Activity summary
+        if result.activity:
+            act = result.activity
+            summary["activity"] = {
+                "summary": act.summary,
+                "patterns": act.patterns.patterns,
+            }
+
+        # Temperature summary
+        if result.temperature:
+            temp = result.temperature
+            summary["temperature"] = {
+                "summary": temp.summary,
+                "patterns": temp.patterns.patterns,
+            }
+
+        # Meal features summary
+        if result.meal_features:
+            mf = result.meal_features
+            summary["meal_features"] = {
+                "summary": mf.summary,
+                "patterns": mf.patterns.patterns,
+            }
+
         # Cross-modal patterns
         summary["cross_modal_patterns"] = [
             {"name": p.name, "description": p.description} for p in result.detected_patterns

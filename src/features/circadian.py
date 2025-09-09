@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from typing import List, Dict, Any
 from .base import BaseFeatureExtractor
+from .utils import standardize_timestamp_col
 
 class CircadianFeaturesExtractor(BaseFeatureExtractor):
     """
@@ -19,22 +20,15 @@ class CircadianFeaturesExtractor(BaseFeatureExtractor):
             return {}
 
         df = pd.DataFrame(physio_data_dicts)
+        df = standardize_timestamp_col(df)
 
-        # Find the correct timestamp column
-        timestamp_col = None
-        for col in ['created_time', 'log_date_time', 'time']:
-            if col in df.columns:
-                timestamp_col = col
-                break
-
-        if timestamp_col is None:
+        if 'timestamp' not in df.columns:
             return {}
-
-        df[timestamp_col] = pd.to_datetime(df[timestamp_col], errors='coerce')
-        df = df.dropna(subset=[timestamp_col])
+        df['timestamp'] = pd.to_datetime(df['timestamp'], errors='coerce')
+        df = df.dropna(subset=['timestamp'])
         if df.empty:
             return {}
-        df = df.set_index(timestamp_col)
+        df = df.set_index('timestamp')
 
         numeric_df = df.select_dtypes(include=np.number)
         if numeric_df.empty:

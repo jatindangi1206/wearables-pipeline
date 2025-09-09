@@ -9,6 +9,18 @@ from src.analyzers.cross_modal import CrossModalAnalyzer
 from src.reporting.report_generator import ReportGenerator
 from src.features.circadian import CircadianFeaturesExtractor
 from src.analyzers.circadian import CircadianAnalyzer
+from src.features.variability import VariabilityFeaturesExtractor
+from src.analyzers.variability import VariabilityAnalyzer
+from src.features.complexity import ComplexityFeaturesExtractor
+from src.analyzers.complexity import ComplexityAnalyzer
+from src.features.sleep import SleepFeaturesExtractor
+from src.analyzers.sleep import SleepAnalyzer
+from src.features.activity import ActivityFeaturesExtractor
+from src.analyzers.activity import ActivityAnalyzer
+from src.features.temperature import TemperatureFeaturesExtractor
+from src.analyzers.temperature import TemperatureAnalyzer
+from src.features.meal import MealFeaturesExtractor
+from src.analyzers.meal_features import MealFeaturesAnalyzer
 
 def cleaning_fn(data):
     # No-op: data is already validated/model instances
@@ -23,6 +35,12 @@ def main(config_path):
     # Feature Extraction functions
     feature_extraction_fns = {
         'circadian': lambda d: CircadianFeaturesExtractor(d).extract_features(),
+        'variability': lambda d: VariabilityFeaturesExtractor(d).extract_features(),
+        'complexity': lambda d: ComplexityFeaturesExtractor(d).extract_features(),
+        'sleep': lambda d: SleepFeaturesExtractor(d).extract_features(),
+        'activity': lambda d: ActivityFeaturesExtractor(d).extract_features(),
+        'temperature': lambda d: TemperatureFeaturesExtractor(d).extract_features(),
+        'meal': lambda d: MealFeaturesExtractor(d).extract_features(),
     }
 
     # Analysis functions
@@ -52,12 +70,36 @@ def main(config_path):
     def circadian_fn(data):
         circadian_features = data.get('features', {}).get('circadian', {})
         return CircadianAnalyzer(circadian_features).analyze()
+    def variability_fn(data):
+        variability_features = data.get('features', {}).get('variability', {})
+        return VariabilityAnalyzer(variability_features).analyze()
+    def complexity_fn(data):
+        complexity_features = data.get('features', {}).get('complexity', {})
+        return ComplexityAnalyzer(complexity_features).analyze()
+    def sleep_analysis_fn(data):
+        sleep_features = data.get('features', {}).get('sleep', {})
+        return SleepAnalyzer(sleep_features).analyze()
+    def activity_analysis_fn(data):
+        activity_features = data.get('features', {}).get('activity', {})
+        return ActivityAnalyzer(activity_features).analyze()
+    def temperature_analysis_fn(data):
+        temperature_features = data.get('features', {}).get('temperature', {})
+        return TemperatureAnalyzer(temperature_features).analyze()
+    def meal_features_analysis_fn(data):
+        meal_features = data.get('features', {}).get('meal', {})
+        return MealFeaturesAnalyzer(meal_features).analyze()
 
     analysis_fns = {
         'lung_function': lung_fn,
         'meal': meal_fn,
         'physiological': physio_fn,
         'circadian': circadian_fn,
+        'variability': variability_fn,
+        'complexity': complexity_fn,
+        'sleep': sleep_analysis_fn,
+        'activity': activity_analysis_fn,
+        'temperature': temperature_analysis_fn,
+        'meal_features': meal_features_analysis_fn,
     }
     # Cross-modal
     from src.analysis_models.results import MealAnalysisResult, LungFunctionAnalysisResult, PatternDetection
@@ -65,7 +107,13 @@ def main(config_path):
         results["physiological"],
         results["meal"],
         results["lung_function"],
-        results.get("circadian")
+        results.get("circadian"),
+        results.get("variability"),
+        results.get("complexity"),
+        results.get("sleep"),
+        results.get("activity"),
+        results.get("temperature"),
+        results.get("meal_features")
     ).analyze()
     # Reporting
     report_fn = lambda cross_modal_result: ReportGenerator().generate_report(cross_modal_result)

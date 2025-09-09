@@ -28,11 +28,23 @@ class CrossModalAnalyzer:
         meal: MealAnalysisResult,
         lung_function: LungFunctionAnalysisResult,
         circadian: "CircadianAnalysisResult" = None,
+        variability: "VariabilityAnalysisResult" = None,
+        complexity: "ComplexityAnalysisResult" = None,
+        sleep: "SleepAnalysisResult" = None,
+        activity: "ActivityAnalysisResult" = None,
+        temperature: "TemperatureAnalysisResult" = None,
+        meal_features: "MealFeaturesAnalysisResult" = None,
     ):
         self.physiological = physiological
         self.meal = meal
         self.lung_function = lung_function
         self.circadian = circadian
+        self.variability = variability
+        self.complexity = complexity
+        self.sleep = sleep
+        self.activity = activity
+        self.temperature = temperature
+        self.meal_features = meal_features
 
     def align_by_date(self) -> List[Dict[str, Any]]:
         # Aggregate all records by date (YYYY-MM-DD)
@@ -86,6 +98,12 @@ class CrossModalAnalyzer:
             meal=self.meal,
             lung_function=self.lung_function,
             circadian=self.circadian,
+            variability=self.variability,
+            complexity=self.complexity,
+            sleep=self.sleep,
+            activity=self.activity,
+            temperature=self.temperature,
+            meal_features=self.meal_features,
             aligned_records=aligned_records,
             detected_patterns=detected_patterns,
             metadata=metadata,
